@@ -130,7 +130,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="SendFailNotifications.cs" />
     <Compile Include="Notifications.xaml.cs">
       <DependentUpon>Notifications.xaml</DependentUpon>
@@ -320,6 +319,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Database\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

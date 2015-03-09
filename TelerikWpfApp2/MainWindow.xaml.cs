@@ -25,6 +25,7 @@ namespace TelerikWpfApp2
     /// </summary>
     public partial class MainWindow : Window
     {
+        
 
         private Logger logger = LogManager.GetLogger("MainWindow");
 
@@ -116,19 +117,12 @@ namespace TelerikWpfApp2
         {
             logger.Debug("program starts ... ");
             InitializeComponent();
-            DB();
             SetDefaultValues();
             OpenPorts();
             InitSeries();
         }
 
-        private void DB()
-        {
-            DatabaseConnection objConnect = new DatabaseConnection();
-            
-//            string conString = Properties.Settings.Default;
-//            objConnect.Sql = Properties.Settings.Default.SQL;
-        }
+      
 
         public async void AsyncTasks()
         {
