@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="http://pardiskish" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns1="http://sql.java" xmlns:impl="http://pardiskish" targetNamespace="http://pardiskish" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://pardiskish">
+      <xsd:import namespace="http://sql.java" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="ArrayOf_xsd_long">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="xsd:long[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_xsd_int">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="xsd:int[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_xsd_string">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="xsd:string[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ServiceSendResponse">
+    <wsdl:part name="ServiceSendReturn" type="impl:ArrayOf_xsd_long" />
+  </wsdl:message>
+  <wsdl:message name="queryRequest">
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+    <wsdl:part name="domain" type="xsd:string" />
+    <wsdl:part name="messageIds" type="impl:ArrayOf_xsd_long" />
+  </wsdl:message>
+  <wsdl:message name="loadImpnumsResponse" />
+  <wsdl:message name="getClearNumberResponse">
+    <wsdl:part name="getClearNumberReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="loadImpnumsRequest">
+    <wsdl:part name="con" type="xsd:anyType" />
+  </wsdl:message>
+  <wsdl:message name="ServiceSendRequest">
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+    <wsdl:part name="domain" type="xsd:string" />
+    <wsdl:part name="msgType" type="xsd:int" />
+    <wsdl:part name="messages" type="impl:ArrayOf_xsd_string" />
+    <wsdl:part name="destinations" type="impl:ArrayOf_xsd_string" />
+    <wsdl:part name="originators" type="impl:ArrayOf_xsd_string" />
+    <wsdl:part name="udhs" type="impl:ArrayOf_xsd_string" />
+    <wsdl:part name="mClass" type="impl:ArrayOf_xsd_string" />
+    <wsdl:part name="ServiceIds" type="impl:ArrayOf_xsd_string" />
+  </wsdl:message>
+  <wsdl:message name="getClearNumberRequest">
+    <wsdl:part name="number" type="xsd:string" />
+    <wsdl:part name="appendZiro" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="queryResponse">
+    <wsdl:part name="queryReturn" type="impl:ArrayOf_xsd_int" />
+  </wsdl:message>
+  <wsdl:portType name="HelloWorld">
+    <wsdl:operation name="query" parameterOrder="username password domain messageIds">
+      <wsdl:input name="queryRequest" message="impl:queryRequest" />
+      <wsdl:output name="queryResponse" message="impl:queryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ServiceSend" parameterOrder="username password domain msgType messages destinations originators udhs mClass ServiceIds">
+      <wsdl:input name="ServiceSendRequest" message="impl:ServiceSendRequest" />
+      <wsdl:output name="ServiceSendResponse" message="impl:ServiceSendResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="loadImpnums" parameterOrder="con">
+      <wsdl:input name="loadImpnumsRequest" message="impl:loadImpnumsRequest" />
+      <wsdl:output name="loadImpnumsResponse" message="impl:loadImpnumsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getClearNumber" parameterOrder="number appendZiro">
+      <wsdl:input name="getClearNumberRequest" message="impl:getClearNumberRequest" />
+      <wsdl:output name="getClearNumberResponse" message="impl:getClearNumberResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SMSSoapBinding" type="impl:HelloWorld">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="query">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="queryRequest">
+        <wsdlsoap:body use="encoded" namespace="http://pardiskish" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="queryResponse">
+        <wsdlsoap:body use="encoded" namespace="http://pardiskish" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ServiceSend">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="ServiceSendRequest">
+        <wsdlsoap:body use="encoded" namespace="http://pardiskish" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="ServiceSendResponse">
+        <wsdlsoap:body use="encoded" namespace="http://pardiskish" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loadImpnums">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="loadImpnumsRequest">
+        <wsdlsoap:body use="encoded" namespace="http://pardiskish" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="loadImpnumsResponse">
+        <wsdlsoap:body use="encoded" namespace="http://pardiskish" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getClearNumber">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getClearNumberRequest">
+        <wsdlsoap:body use="encoded" namespace="http://pardiskish" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getClearNumberResponse">
+        <wsdlsoap:body use="encoded" namespace="http://pardiskish" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HelloWorldService">
+    <wsdl:port name="SMS" binding="impl:SMSSoapBinding">
+      <wsdlsoap:address location="http://172.17.25.79/websrv/services/SMS" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,16 @@
+﻿<Window
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                x:Class="TelerikWpfApp2.MainWindow"
+                Title="سامانه نظارت اس.ام.اس" Height="893" Width="1016" >
+    <Grid>
+        <telerik:RadChart x:Name="SmsRadChart" HorizontalAlignment="Left" Margin="10,246,0,0" VerticalAlignment="Top" Height="274" Width="988"/>
+        <telerik:RadChart x:Name="SmsRadChart2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="231" Width="988"/>
+        <telerik:RadButton Content="تنظیمات" HorizontalAlignment="Left" Height="Auto" Margin="268,525,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click"/>
+        <telerik:RadButton Content="شروع" Name="StartStopButton" HorizontalAlignment="Left" Height="Auto" Margin="595,525,0,0" VerticalAlignment="Top" Width="104" Click="StartStopButton_Click"/>
+        <telerik:RadButton Content="پاک کردن همه چیز" HorizontalAlignment="Left" Height="Auto" Margin="486,525,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click_1"/>
+        <telerik:RadButton Content="هشدارها" HorizontalAlignment="Left" Height="Auto" Margin="377,525,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click_2" />
+        <telerik:RadGridView Name="RadOperatorProblemGridView" HorizontalAlignment="Left" Margin="10,552,0,0" VerticalAlignment="Top" Height="301" Width="988"/>
+    </Grid>
+</Window>
