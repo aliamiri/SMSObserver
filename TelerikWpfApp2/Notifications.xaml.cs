@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 
 namespace TelerikWpfApp2
 {
@@ -13,6 +14,13 @@ namespace TelerikWpfApp2
             InitializeComponent();
 
             RadNoficationGridView.ItemsSource = notificationsClasses;
+            PreviewKeyDown += HandleEsc;
+        }
+
+        private void HandleEsc(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
         }
     }
 }

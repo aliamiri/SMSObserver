@@ -16,7 +16,6 @@ using NLog;
 using SMSapplication;
 using SMSDLL;
 using Telerik.Windows.Controls.Charting;
-using TelerikWpfApp2.Database;
 
 namespace TelerikWpfApp2
 {
@@ -996,10 +995,9 @@ namespace TelerikWpfApp2
 
                 delay /= (TimeSpan.TicksPerMillisecond*1000);
 
-                var smsClass = new RevcieveSms(delay, Convert.ToInt32(strings[1]), strings[2]);
+                var smsClass = new RevcieveSms(myId,delay, Convert.ToInt32(strings[1]), strings[2]);
 
                 new RecievedSmsWrapper(_smsClasses, smsClass);
-
             }
             return smsIndex;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Input;
 
 namespace TelerikWpfApp2
 {
@@ -39,10 +40,14 @@ namespace TelerikWpfApp2
 
             ChartsIntervalsBox.Text = chartsInterVals.ToString(CultureInfo.InvariantCulture);
 
-
-
+            PreviewKeyDown += HandleEsc;
         }
 
+        private void HandleEsc(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
