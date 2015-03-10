@@ -19,8 +19,8 @@ namespace TelerikWpfApp2
 
             PhoneNumberBox.Text = icphoneNumber;
             HaPhoneNumberBox.Text = haphoneNumber;
-            IranCell2TextBox.Text = icphoneNumber;
-            HamrahAvval2TextBox.Text = haphoneNumber;
+            IranCell2TextBox.Text = icphoneNumber2;
+            HamrahAvval2TextBox.Text = haphoneNumber2;
             
             SendSmsIntervalBox.Text = smsSendInterval.ToString(CultureInfo.InvariantCulture);
             RefreshTimeBox.Text = refreshTime.ToString(CultureInfo.InvariantCulture);

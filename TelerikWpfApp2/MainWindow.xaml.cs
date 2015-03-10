@@ -88,8 +88,8 @@ namespace TelerikWpfApp2
         private ObservableCollection<MyChartObject> _NotRecievedList = new ObservableCollection<MyChartObject>();
 
 
-        private static bool isICEnabaled ;
-        private static bool isHaenabaled = true;
+        private static bool isICEnabaled = true;
+        private static bool isHaenabaled;
         private static bool isICEnabaled2;
         private static bool isHaenabaled2;
 
@@ -274,11 +274,9 @@ namespace TelerikWpfApp2
             lable = "آتیه - همراه";
 
             var adpSeriesMapping = InitiSerie(lable, category, yValue);
-
             SmsRadChart.SeriesMappings.Add(adpSeriesMapping);
 
             var adpSeriesMapping2 = InitiSerie(lable, category, yValue);
-
             SmsRadChart2.SeriesMappings.Add(adpSeriesMapping2);
 
 
@@ -304,6 +302,7 @@ namespace TelerikWpfApp2
             lable ="رهیاب-ایرانسل";
             var icrahSeriesMapping = InitiSerie(lable, category, yValue);
             SmsRadChart.SeriesMappings.Add(icrahSeriesMapping);
+
             var icrahSeriesMapping2= InitiSerie(lable, category, yValue);
             SmsRadChart2.SeriesMappings.Add(icrahSeriesMapping2);
 
@@ -1059,30 +1058,30 @@ namespace TelerikWpfApp2
         public string IcAdpSendSms()
         {
             var type = 0;
-            SendSmsWithADP(type);
+            SendSmsWithAdp(type);
             return null;
         }
         public string IcAdpSendSms2()
         {
             var type = 2;
-            SendSmsWithADP(type);
+            SendSmsWithAdp(type);
             return null;
         }
 
         public string HaAdpSendSms()
         {
             var type = 1;
-            SendSmsWithADP(type);
+            SendSmsWithAdp(type);
             return null;
         }
         public string HaAdpSendSms2()
         {
             var type = 1;
-            SendSmsWithADP(type);
+            SendSmsWithAdp(type);
             return null;
         }
 
-        private void SendSmsWithADP(int type)
+        private void SendSmsWithAdp(int type)
         {
             var senderType = type == 0 ? 0 : 4;
             var phoneNumber = type == 0 ? IC_PhoneNumber : type == 1 ? HA_PhoneNumber : type == 2?IC_PhoneNumber2:HA_PhoneNumber2;
@@ -1320,7 +1319,7 @@ namespace TelerikWpfApp2
         #region button functions
         private void RadButton_Click(object sender, RoutedEventArgs e)
         {
-            var window2 = new SettingWindow(IC_PhoneNumber, HA_PhoneNumber, IC_PhoneNumber, HA_PhoneNumber, SendSmsInterval, RefreshTime, WaitThresholdTime, SendCleanUpTime, RecieveCleanUpTime, DelayThreshold,
+            var window2 = new SettingWindow(IC_PhoneNumber, HA_PhoneNumber, IC_PhoneNumber2, HA_PhoneNumber2, SendSmsInterval, RefreshTime, WaitThresholdTime, SendCleanUpTime, RecieveCleanUpTime, DelayThreshold,
                 NotRecievedThreshold,ActiveADP,ActiveSmart,ActiveJiring,ActiveRahnama,ChartsInterVals,isICEnabaled,isHaenabaled);
             window2.ShowDialog();
         }
