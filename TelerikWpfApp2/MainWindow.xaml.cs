@@ -10,14 +10,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using NLog;
 using SMSapplication;
 using SMSDLL;
 using Telerik.Windows.Controls.Charting;
-using Image = System.Windows.Controls.Image;
 
 namespace TelerikWpfApp2
 {
@@ -88,8 +86,8 @@ namespace TelerikWpfApp2
         private ObservableCollection<MyChartObject> _NotRecievedList = new ObservableCollection<MyChartObject>();
 
 
-        private static bool isICEnabaled = true;
-        private static bool isHaenabaled;
+        private static bool isICEnabaled;
+        private static bool isHaenabaled = true;
         private static bool isICEnabaled2;
         private static bool isHaenabaled2;
 
