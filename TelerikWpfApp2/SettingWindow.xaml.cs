@@ -62,7 +62,7 @@ namespace TelerikWpfApp2
                 var waitThresholdTime = Convert.ToInt32(WaitThresholdTimeBox.Text);
                 var sendCleanUpTime = Convert.ToInt32(SendCleanUpTimeBox.Text);
                 var recieveCleanUpTime = Convert.ToInt32(RecieveCleanUpTimeBox.Text);
-                var delayThreshold = Convert.ToDouble(DelayThresholdBox.Text);
+                var delayThreshold = Convert.ToInt64(DelayThresholdBox.Text);
                 var notRecievedThreshold = Convert.ToInt32(NotRecievedThresholdBox.Text);
                 var chartsIntevals = Convert.ToInt32(ChartsIntervalsBox.Text);
 

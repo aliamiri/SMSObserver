@@ -5,17 +5,19 @@ using System.Configuration;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Xml;
 using NLog;
 using SMSapplication;
 using SMSDLL;
 using Telerik.Windows.Controls.Charting;
+using Image = System.Windows.Controls.Image;
 
 namespace TelerikWpfApp2
 {
@@ -43,7 +45,7 @@ namespace TelerikWpfApp2
         private static int SendCleanUpTime;
         private static int RecieveCleanUpTime;
 
-        private static double DelayThreshold;
+        private static long DelayThreshold;
         private static int NotRecievedThreshold;
         private static int ChartsInterVals;
 
@@ -110,7 +112,22 @@ namespace TelerikWpfApp2
         private bool _ishaSmartDelay;
         private bool _isJiringDelay;
 
+        private int icAtieStatus = 0;
+        private int icSmartStatus = 0;
+        private int icRahyabStatus = 0;
+
+        private int haAtieStatus = 0;
+        private int haSmartStatus = 0;
+        private int haRahyabStatus = 0;
+        private int jiringStatus = 0;
+        
+        private BitmapSource redSource;
+        private BitmapSource yellowSource;
+        private BitmapSource greenSource;
+        
         #endregion
+
+
 
         public MainWindow()
         {
@@ -119,6 +136,21 @@ namespace TelerikWpfApp2
             SetDefaultValues();
             OpenPorts();
             InitSeries();
+            redSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                    Properties.Resources.red_light.GetHbitmap(),
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromWidthAndHeight(50, 50));
+            yellowSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                    Properties.Resources.yellow_light.GetHbitmap(),
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromWidthAndHeight(50, 50));
+            greenSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                    Properties.Resources.green_light.GetHbitmap(),
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromWidthAndHeight(50, 50));
         }
 
       
@@ -214,7 +246,7 @@ namespace TelerikWpfApp2
                 SendSmsWrapper.WaitTime = SendCleanUpTime*1000;
                 RecievedSmsWrapper.WaitTime = RecieveCleanUpTime*1000;
 
-                DelayThreshold = Convert.ToDouble(ConfigurationManager.AppSettings["DelayThreshold"] );
+                DelayThreshold = Convert.ToInt64(ConfigurationManager.AppSettings["DelayThreshold"] );
                 NotRecievedThreshold = Convert.ToInt32(ConfigurationManager.AppSettings["NotRecievedThreshold"] );
             }
             catch (Exception  e)
@@ -225,161 +257,88 @@ namespace TelerikWpfApp2
 
         private void InitSeries()
         {
-            var icadpSeriesMapping = new SeriesMapping
-            {
-                LegendLabel = "آتیه - ایرانسل",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            icadpSeriesMapping.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            icadpSeriesMapping.ItemMappings.Add(new ItemMapping("IcApdVal", DataPointMember.YValue));
-            icadpSeriesMapping.SeriesDefinition.ShowItemLabels = false;
+            const string category = "StartTime";
 
 
-
+            var yValue = "IcApdVal";
+            var lable = "آتیه - ایرانسل";
+           
+            var icadpSeriesMapping = InitiSerie(lable, category, yValue);
             SmsRadChart.SeriesMappings.Add(icadpSeriesMapping);
 
-            var icadpSeriesMapping2 = new SeriesMapping
-            {
-                LegendLabel = "آتیه - ایرانسل",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            icadpSeriesMapping2.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            icadpSeriesMapping2.ItemMappings.Add(new ItemMapping("IcApdVal", DataPointMember.YValue));
-
+            var icadpSeriesMapping2 = InitiSerie(lable, category, yValue);
             SmsRadChart2.SeriesMappings.Add(icadpSeriesMapping2);
 
 
-            var adpSeriesMapping = new SeriesMapping
-            {
-                LegendLabel = "آتیه - همراه",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            adpSeriesMapping.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            adpSeriesMapping.ItemMappings.Add(new ItemMapping("HaApdVal", DataPointMember.YValue));
-            adpSeriesMapping.SeriesDefinition.ShowItemLabels = false;
+            yValue = "HaApdVal";
+            lable = "آتیه - همراه";
+
+            var adpSeriesMapping = InitiSerie(lable, category, yValue);
 
             SmsRadChart.SeriesMappings.Add(adpSeriesMapping);
 
-            var adpSeriesMapping2 = new SeriesMapping
-            {
-                LegendLabel = "آتیه - همراه",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            adpSeriesMapping2.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            adpSeriesMapping2.ItemMappings.Add(new ItemMapping("HaApdVal", DataPointMember.YValue));
+            var adpSeriesMapping2 = InitiSerie(lable, category, yValue);
 
             SmsRadChart2.SeriesMappings.Add(adpSeriesMapping2);
 
 
-
-            var icsmartSeriesMapping = new SeriesMapping
-            {
-                LegendLabel = "اسمارت-ایرانسل",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            icsmartSeriesMapping.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            icsmartSeriesMapping.ItemMappings.Add(new ItemMapping("IcSmartVal", DataPointMember.YValue));
-            icsmartSeriesMapping.SeriesDefinition.ShowItemLabels = false;
-
+             yValue = "IcSmartVal";
+            lable = "اسمارت-ایرانسل";
+            var icsmartSeriesMapping = InitiSerie(lable, category, yValue);
             SmsRadChart.SeriesMappings.Add(icsmartSeriesMapping);
 
-            var icsmartSeriesMapping2 = new SeriesMapping
-            {
-                LegendLabel = "اسمارت-ایرانسل",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            icsmartSeriesMapping2.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            icsmartSeriesMapping2.ItemMappings.Add(new ItemMapping("IcSmartVal", DataPointMember.YValue));
-
+            var icsmartSeriesMapping2= InitiSerie(lable, category, yValue);
             SmsRadChart2.SeriesMappings.Add(icsmartSeriesMapping2);
 
-            var smartSeriesMapping = new SeriesMapping
-            {
-                LegendLabel = "اسمارت-همراه",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            smartSeriesMapping.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            smartSeriesMapping.ItemMappings.Add(new ItemMapping("HaSmartVal", DataPointMember.YValue));
-            smartSeriesMapping.SeriesDefinition.ShowItemLabels = false;
 
+             yValue = "HaSmartVal";
+            lable =  "اسمارت-همراه";
+            var smartSeriesMapping = InitiSerie(lable, category, yValue);
             SmsRadChart.SeriesMappings.Add(smartSeriesMapping);
 
-            var smartSeriesMapping2 = new SeriesMapping
-            {
-                LegendLabel = "اسمارت-همراه",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            smartSeriesMapping2.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            smartSeriesMapping2.ItemMappings.Add(new ItemMapping("HaSmartVal", DataPointMember.YValue));
-
+            var smartSeriesMapping2 = InitiSerie(lable, category, yValue);
             SmsRadChart2.SeriesMappings.Add(smartSeriesMapping2);
 
-            var icrahSeriesMapping = new SeriesMapping
-            {
-                LegendLabel = "رهیاب-ایرانسل",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            icrahSeriesMapping.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            icrahSeriesMapping.ItemMappings.Add(new ItemMapping("IcRahVal", DataPointMember.YValue));
-            icrahSeriesMapping.SeriesDefinition.ShowItemLabels = false;
 
+             yValue = "IcRahVal";
+            lable ="رهیاب-ایرانسل";
+            var icrahSeriesMapping = InitiSerie(lable, category, yValue);
             SmsRadChart.SeriesMappings.Add(icrahSeriesMapping);
-
-            var icrahSeriesMapping2 = new SeriesMapping
-            {
-                LegendLabel = "رهیاب-ایرانسل",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            icrahSeriesMapping2.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            icrahSeriesMapping2.ItemMappings.Add(new ItemMapping("IcRahVal", DataPointMember.YValue));
-
+            var icrahSeriesMapping2= InitiSerie(lable, category, yValue);
             SmsRadChart2.SeriesMappings.Add(icrahSeriesMapping2);
 
-            var rahSeriesMapping = new SeriesMapping
-            {
-                LegendLabel = "رهیاب-همراه",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            rahSeriesMapping.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            rahSeriesMapping.ItemMappings.Add(new ItemMapping("HaRahVal", DataPointMember.YValue));
-            rahSeriesMapping.SeriesDefinition.ShowItemLabels = false;
 
+             yValue = "HaRahVal";
+            lable = "رهیاب-همراه";
+            var rahSeriesMapping = InitiSerie(lable, category, yValue);
             SmsRadChart.SeriesMappings.Add(rahSeriesMapping);
 
-            var rahSeriesMapping2 = new SeriesMapping
-            {
-                LegendLabel = "رهیاب-همراه",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            rahSeriesMapping2.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            rahSeriesMapping2.ItemMappings.Add(new ItemMapping("HaRahVal", DataPointMember.YValue));
-
+            var rahSeriesMapping2 = InitiSerie(lable, category, yValue);
             SmsRadChart2.SeriesMappings.Add(rahSeriesMapping2);
 
-
-            var jiringSeriesMapping = new SeriesMapping
-            {
-                LegendLabel = "جیرینگ",
-                SeriesDefinition = new LineSeriesDefinition()
-            };
-            jiringSeriesMapping.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            jiringSeriesMapping.ItemMappings.Add(new ItemMapping("JiringVal", DataPointMember.YValue));
-            jiringSeriesMapping.SeriesDefinition.ShowItemLabels = false;
-
+             yValue = "JiringVal";
+            lable = "جیرینگ";
+            var jiringSeriesMapping = InitiSerie(lable, category, yValue);
             SmsRadChart.SeriesMappings.Add(jiringSeriesMapping);
 
-            var jiringSeriesMapping2 = new SeriesMapping
-            {
-                LegendLabel = "جیرینگ",
-                SeriesDefinition = new LineSeriesDefinition(),
-            };
-            jiringSeriesMapping2.ItemMappings.Add(new ItemMapping("StartTime", DataPointMember.XCategory));
-            jiringSeriesMapping2.ItemMappings.Add(new ItemMapping("JiringVal", DataPointMember.YValue));
-
+            var jiringSeriesMapping2 = InitiSerie(lable, category, yValue);
             SmsRadChart2.SeriesMappings.Add(jiringSeriesMapping2);
 
             SmsRadChart.DefaultView.ChartArea.EnableAnimations = false;
             SmsRadChart2.DefaultView.ChartArea.EnableAnimations = false;
+        }
+
+        private static SeriesMapping InitiSerie(string lable, string category, string yValue)
+        {
+            var icadpSeriesMapping = new SeriesMapping
+            {
+                LegendLabel = lable,
+                SeriesDefinition = new LineSeriesDefinition()
+            };
+            icadpSeriesMapping.ItemMappings.Add(new ItemMapping(category, DataPointMember.XCategory));
+            icadpSeriesMapping.ItemMappings.Add(new ItemMapping(yValue, DataPointMember.YValue));
+            icadpSeriesMapping.SeriesDefinition.ShowItemLabels = false;
+            return icadpSeriesMapping;
         }
 
         #endregion
@@ -403,6 +362,8 @@ namespace TelerikWpfApp2
 
                     RadNoficationGridView.ItemsSource = null;
                     RadNoficationGridView.ItemsSource = _notificationsClasses;
+
+                    ChangeStatusColor();
                 }
                 catch (Exception e)
                 {
@@ -412,118 +373,95 @@ namespace TelerikWpfApp2
             return null;
         }
 
+        private void ChangeStatusColor()
+        {
+            AtieImage.Source = icAtieStatus > 2 ? redSource : icAtieStatus > 0 ? yellowSource : greenSource;
+            SmartImage.Source = icSmartStatus > 2 ? redSource : icSmartStatus > 0 ? yellowSource : greenSource;
+            RahyabImage.Source = icRahyabStatus > 2 ? redSource : icRahyabStatus > 0 ? yellowSource : greenSource;
+
+            AtieImageHa.Source = haAtieStatus> 2 ? redSource : haAtieStatus> 0 ? yellowSource : greenSource;
+            SmartImageHa.Source = haSmartStatus> 2 ? redSource : haSmartStatus> 0 ? yellowSource : greenSource;
+            RahyabImageHa.Source = haRahyabStatus> 2 ? redSource : haRahyabStatus> 0 ? yellowSource : greenSource;
+            JiringImage.Source = jiringStatus> 2 ? redSource : jiringStatus> 0 ? yellowSource : greenSource;
+        }
+
         private void CreateDataForDelay()
         {
             try
             {
+
                 var dateTime = DateTime.Now;
+                var adpTotalDelay = GetDelay(0);
+                
+                var haadpTotalDelay = GetDelay(4);
+                var smartTotalDelay = GetDelay(1);
+                var haSmartTotalDelay = GetDelay(5);
+                var rahTotalDelay = GetDelay(2);
+                var haRahTotalDelay = GetDelay(6);
+                var jirTotalDelay = GetDelay(3);
 
-                var mySmSs = _smsClasses.FindAll(item => item.RevcieveSms.Type == 0);
+                SetDelayStatus(adpTotalDelay, smartTotalDelay, rahTotalDelay, haadpTotalDelay, haSmartTotalDelay, haRahTotalDelay, jirTotalDelay);
 
-                var currCount = 0;
-                long adpTotalDelay = 0;
-
-                foreach (var myAdp in mySmSs)
-                {
-                    currCount++;
-                    adpTotalDelay += myAdp.RevcieveSms.Delay;
-                }
-
-                if (currCount != 0)
-                    adpTotalDelay /= currCount;
-
-                mySmSs = _smsClasses.FindAll(item => item.RevcieveSms.Type == 4);
-
-                currCount = 0;
-                long haadpTotalDelay = 0;
-
-                foreach (var myAdp in mySmSs)
-                {
-                    currCount++;
-                    haadpTotalDelay += myAdp.RevcieveSms.Delay;
-                }
-
-                if (currCount != 0)
-                    haadpTotalDelay /= currCount;
-
-
-                currCount = 0;
-                long smartTotalDelay = 0;
-                mySmSs = _smsClasses.FindAll(item => item.RevcieveSms.Type == 1);
-                foreach (var mySmart in mySmSs)
-                {
-                    currCount++;
-                    smartTotalDelay += mySmart.RevcieveSms.Delay;
-                }
-
-                if (currCount != 0)
-                    smartTotalDelay /= currCount;
-
-
-                currCount = 0;
-                long haSmartTotalDelay = 0;
-                mySmSs = _smsClasses.FindAll(item => item.RevcieveSms.Type == 5);
-                foreach (var mySmart in mySmSs)
-                {
-                    currCount++;
-                    haSmartTotalDelay += mySmart.RevcieveSms.Delay;
-                }
-
-                if (currCount != 0)
-                    haSmartTotalDelay /= currCount;
-
-
-                currCount = 0;
-                long rahTotalDelay = 0;
-                mySmSs = _smsClasses.FindAll(item => item.RevcieveSms.Type == 2);
-                foreach (var mySmart in mySmSs)
-                {
-                    currCount++;
-                    rahTotalDelay += mySmart.RevcieveSms.Delay;
-                }
-
-                if (currCount != 0)
-                    rahTotalDelay /= currCount;
-
-
-                currCount = 0;
-                long haRahTotalDelay = 0;
-                mySmSs = _smsClasses.FindAll(item => item.RevcieveSms.Type == 6);
-                foreach (var mySmart in mySmSs)
-                {
-                    currCount++;
-                    haRahTotalDelay += mySmart.RevcieveSms.Delay;
-                }
-
-                if (currCount != 0)
-                    haRahTotalDelay /= currCount;
-
-                currCount = 0;
-                long jirTotalDelay = 0;
-                mySmSs = _smsClasses.FindAll(item => item.RevcieveSms.Type == 3);
-                foreach (var mySmart in mySmSs)
-                {
-                    currCount++;
-                    jirTotalDelay += mySmart.RevcieveSms.Delay;
-                }
-                if (currCount != 0)
-                    jirTotalDelay /= currCount;
                 UpdateDelayNotifications(adpTotalDelay, dateTime, haadpTotalDelay, smartTotalDelay, haSmartTotalDelay,
                     rahTotalDelay, haRahTotalDelay, jirTotalDelay);
+
                 while (_latancyList.Count > ChartsInterVals)
                     _latancyList.RemoveAt(0);
-
 
                 var o = new MyChartObject(adpTotalDelay, smartTotalDelay, rahTotalDelay, jirTotalDelay, haadpTotalDelay,
                     haSmartTotalDelay, haRahTotalDelay, DateTime.Now);
 
                 _latancyList.Add(o);
-
             }
             catch (Exception ex)
             {
                 logger.Error("CreateDataForDelay" + ex.Message);
             }
+        }
+
+        private void SetDelayStatus(long adpTotalDelay, long smartTotalDelay, long rahTotalDelay, long haadpTotalDelay,
+            long haSmartTotalDelay, long haRahTotalDelay, long jirTotalDelay)
+        {
+            var twoThird = 2*DelayThreshold/3;
+            var half = DelayThreshold/2;
+
+            icAtieStatus = adpTotalDelay > DelayThreshold ? 3 : adpTotalDelay > twoThird ? 2 : adpTotalDelay > half ? 1 : 0;
+
+            icSmartStatus = smartTotalDelay > DelayThreshold
+                ? 3
+                : smartTotalDelay > twoThird ? 2 : smartTotalDelay > half ? 1 : 0;
+
+            icRahyabStatus = rahTotalDelay > DelayThreshold ? 3 : rahTotalDelay > twoThird ? 2 : rahTotalDelay > half ? 1 : 0;
+
+            haAtieStatus = haadpTotalDelay > DelayThreshold
+                ? 3
+                : haadpTotalDelay > twoThird ? 2 : haadpTotalDelay > half ? 1 : 0;
+
+            haSmartStatus = haSmartTotalDelay > DelayThreshold
+                ? 3
+                : haSmartTotalDelay > twoThird ? 2 : haSmartTotalDelay > half ? 1 : 0;
+
+            haRahyabStatus = haRahTotalDelay > DelayThreshold
+                ? 3
+                : haRahTotalDelay > twoThird ? 2 : haRahTotalDelay > half ? 1 : 0;
+
+            jiringStatus = jirTotalDelay > DelayThreshold ? 3 : jirTotalDelay > twoThird ? 2 : jirTotalDelay > half ? 1 : 0;
+        }
+
+        private long GetDelay(int type)
+        {
+            var mySmSs = _smsClasses.FindAll(item => item.RevcieveSms.Type == type);
+            var currCount = 0;
+            long totalDelay = 0;
+            foreach (var sms in mySmSs)
+            {
+                currCount++;
+                totalDelay += sms.RevcieveSms.Delay;
+            }
+
+            if (currCount != 0)
+                totalDelay /= currCount;
+            return totalDelay;
         }
 
         public void CreateDataForNotRecieved()
@@ -567,14 +505,13 @@ namespace TelerikWpfApp2
                         item => item.sms.SendTime.AddSeconds(WaitThresholdTime) < dateTime && item.sms.Type == 6)
                         .Count);
 
-
-
-
             var allJir =
                 Convert.ToDouble(
                     _sendSmses.FindAll(
                         item => item.sms.SendTime.AddSeconds(WaitThresholdTime) < dateTime && item.sms.Type == 3)
                         .Count);
+
+            SetNotRecievedStatus(allAdp, allSmart, allRah, allHaSmart, allHaRah, allhaadp, allJir);
 
             UpdateNotRecievedNotifications(allAdp, dateTime, allhaadp, allSmart, allHaSmart, allRah, allHaRah, allJir);
 
@@ -585,6 +522,21 @@ namespace TelerikWpfApp2
             var o = new MyChartObject(allAdp, allSmart, allRah, allJir, allhaadp, allHaSmart, allHaRah, dateTime);
 
             _NotRecievedList.Add(o);
+        }
+
+        private void SetNotRecievedStatus(double allAdp, double allSmart, double allRah, double allHaSmart, double allHaRah,
+            double allhaadp, double allJir)
+        {
+            var half = NotRecievedThreshold/2;
+            var twoThird = 2*NotRecievedThreshold/3;
+
+            icAtieStatus += allAdp >= NotRecievedThreshold ? 3 : allAdp > twoThird ? 2 : allAdp > half ? 1 : 0;
+            icSmartStatus += allSmart >= NotRecievedThreshold ? 3 : allSmart > twoThird ? 2 : allSmart > half ? 1 : 0;
+            icRahyabStatus += allRah >= NotRecievedThreshold ? 3 : allRah > twoThird ? 2 : allRah > half ? 1 : 0;
+            haSmartStatus += allHaSmart >= NotRecievedThreshold ? 3 : allHaSmart > twoThird ? 2 : allHaSmart > half ? 1 : 0;
+            haRahyabStatus += allHaRah >= NotRecievedThreshold ? 3 : allHaRah > twoThird ? 2 : allHaRah > half ? 1 : 0;
+            haAtieStatus += allhaadp >= NotRecievedThreshold ? 3 : allhaadp > twoThird ? 2 : allhaadp > half ? 1 : 0;
+            jiringStatus += allJir >= NotRecievedThreshold ? 3 : allJir > twoThird ? 2 : allJir > half ? 1 : 0;
         }
 
         #endregion
@@ -1374,7 +1326,7 @@ namespace TelerikWpfApp2
         }
 
         public static void SetConfigs(string icphoneNumber, string haPhoneNumber, string icphoneNumber2, string haPhoneNumber2, int smsSendInterval, int refreshTime, int waitThresholdTime,
-            int sendCleanUpTime,int recieveCleanUpTime,double delayThreshold,int notRecievedThreshold,bool atieCheckBox,
+            int sendCleanUpTime,int recieveCleanUpTime,long delayThreshold,int notRecievedThreshold,bool atieCheckBox,
             bool smartCheckBox,bool jiringCheckBox,bool rahyabCheckBox,int chartsIntevals,bool monitorIC,bool monitorHA)
         {
             var appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

@@ -3,32 +3,52 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                 x:Class="TelerikWpfApp2.MainWindow"
-                Title="سامانه نظارت اس.ام.اس" Height="643" Width="1077" >
+                Title="سامانه نظارت اس.ام.اس" MinHeight="643" MinWidth="1036" MaxHeight="643" MaxWidth="1036" >
     <Grid>
-        <telerik:RadDocking HasDocumentHost="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-            <telerik:RadSplitContainer>
-                <telerik:RadPaneGroup HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,-774,10">
-                    <telerik:RadPane CanUserClose="False" Header="میانگین سرعت ارسال" ToolTip="میانگین سرعت ارسال و دریافت">
-                        <telerik:RadChart x:Name="SmsRadChart" HorizontalAlignment="Left" VerticalAlignment="Top" Height="438" Width="995" Margin="8,22,0,0"/>
+        <telerik:RadDocking HasDocumentHost="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,1,0,-1" FontFamily="Arial" FontSize="15" >
+            <telerik:RadSplitContainer MinWidth="368" MaxWidth="368">
+                <telerik:RadPaneGroup HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,0,-774,10" Width="1010">
+                    <telerik:RadPane CanUserClose="False" Header="میانگین سرعت ارسال" ToolTip="میانگین سرعت ارسال و دریافت" FontFamily="Arial" FontSize="15">
+                        <telerik:RadChart x:Name="SmsRadChart" HorizontalAlignment="Left" VerticalAlignment="Top" Height="423" Width="995" Margin="8,22,0,0"/>
                     </telerik:RadPane>
-                    <telerik:RadPane CanUserClose="False" Header="تعداد نرسیده ها">
+                    <telerik:RadPane CanUserClose="False" Header="تعداد نرسیده ها" FontFamily="Arial" FontSize="15">
                         <telerik:RadChart x:Name="SmsRadChart2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="438" Width="995" Margin="8,22,0,0"/>
                     </telerik:RadPane>
-                    <telerik:RadPane CanUserClose="False" Header="هشدارها">
+                    <telerik:RadPane CanUserClose="False" Header="هشدارها" FontFamily="Arial" FontSize="15">
                         <telerik:RadGridView Name="RadNoficationGridView" HorizontalAlignment="Left" VerticalAlignment="Top" Height="438" Width="995" Margin="8,22,0,0"/>
                     </telerik:RadPane>
-                    <telerik:RadPane CanUserClose="False" Header="قطع ارتباط با سرور">
+                    <telerik:RadPane CanUserClose="False" Header="قطع ارتباط با سرور" FontFamily="Arial" FontSize="15">
                         <telerik:RadGridView Name="RadOperatorProblemGridView" HorizontalAlignment="Left" VerticalAlignment="Top" Height="438" Width="995" Margin="8,22,0,0"/>
                     </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>
-<!--            <Image Height="100" Width="100" Source="Resources/green_light.png"  HorizontalAlignment="Left" Margin="690,581,0,0" VerticalAlignment="Top"/>-->
-
+            <!--            <telerik:RadHorizontalLinearGauge Height="100" Width="100"/>-->
         </telerik:RadDocking>
-        <telerik:RadButton Content="تنظیمات" HorizontalAlignment="Left" Height="Auto" Margin="690,581,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click"/>
-        <telerik:RadButton Content="شروع" Name="StartStopButton" HorizontalAlignment="Left" Height="Auto" Margin="908,581,0,0" VerticalAlignment="Top" Width="104" Click="StartStopButton_Click"/>
-        <telerik:RadButton Content="پاک کردن همه چیز" HorizontalAlignment="Left" Height="Auto" Margin="799,581,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click_1"/>
-        <Image HorizontalAlignment="Left" Height="100" Margin="320,462,0,0" VerticalAlignment="Top" Width="100"/>
+        
+        
+        
+        <telerik:RadButton Content="تنظیمات" HorizontalAlignment="Left" Height="Auto" Margin="690,581,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click" FontFamily="Arial"/>
+        <telerik:RadButton Content="شروع" Name="StartStopButton" HorizontalAlignment="Left" Height="Auto" Margin="908,581,0,0" VerticalAlignment="Top" Width="104" Click="StartStopButton_Click" FontFamily="Arial"/>
+        <telerik:RadButton Content="پاک کردن همه چیز" HorizontalAlignment="Left" Height="Auto" Margin="799,581,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click_1" FontFamily="Arial"/>
 
+        <Image Name="AtieImage" HorizontalAlignment="Left" Source="Resources/green_light.png"  Height="50" Margin="845,490,0,0" VerticalAlignment="Top" Width="50"/>
+        <Image Name="RahyabImage" HorizontalAlignment="Left" Source="Resources/green_light.png"  Height="50" Margin="795,490,0,0" VerticalAlignment="Top" Width="50"/>
+        <Image Name="SmartImage" HorizontalAlignment="Left" Source="Resources/green_light.png"  Height="50" Margin="745,490,0,0" VerticalAlignment="Top" Width="50"/>
+
+        
+        
+        <Label Content="آتیه" Margin="858,535,116,35" FontFamily="Arial" FontSize="13"/>
+        <Label Content="رهیاب" Margin="802,535,172,35" FontFamily="Arial" FontSize="13"/>
+        <Label Content="اسمارت" Margin="748,535,222,35" FontFamily="Arial" FontSize="13"/>
+        <Image x:Name="AtieImageHa" HorizontalAlignment="Left" Source="Resources/green_light.png"  Height="50" Margin="548,490,0,0" VerticalAlignment="Top" Width="50"/>
+        <Image x:Name="RahyabImageHa" HorizontalAlignment="Left" Source="Resources/green_light.png"  Height="50" Margin="498,490,0,0" VerticalAlignment="Top" Width="50"/>
+        <Image x:Name="SmartImageHa" HorizontalAlignment="Left" Source="Resources/green_light.png"  Height="50" Margin="448,490,0,0" VerticalAlignment="Top" Width="50"/>
+        <Image x:Name="JiringImage" HorizontalAlignment="Left" Source="Resources/green_light.png"  Height="50" Margin="398,490,0,0" VerticalAlignment="Top" Width="50"/>
+        <Label Content="آتیه" Margin="561,535,413,35" FontFamily="Arial" FontSize="13"/>
+        <Label Content="رهیاب" Margin="505,535,469,35" FontFamily="Arial" FontSize="13"/>
+        <Label Content="اسمارت" Margin="451,535,519,35" FontFamily="Arial" FontSize="13"/>
+        <Label Content="جیرینگ" Margin="402,535,572,35" FontFamily="Arial" FontSize="13"/>
+        <Label Content="همراه اول" Margin="610,490,283,62" BorderThickness="0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" Opacity="0.97" FontSize="30" FontFamily="Arial" />
+        <Label Content="ایرانسل" Margin="900,490,30,58" BorderThickness="0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" Opacity="0.97" FontSize="30" FontFamily="Arial" />
     </Grid>
 </Window>
