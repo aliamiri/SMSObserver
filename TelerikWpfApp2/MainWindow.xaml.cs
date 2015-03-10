@@ -400,6 +400,9 @@ namespace TelerikWpfApp2
 
                     RadOperatorProblemGridView.ItemsSource = null;
                     RadOperatorProblemGridView.ItemsSource = _channelProblemClasses;
+
+                    RadNoficationGridView.ItemsSource = null;
+                    RadNoficationGridView.ItemsSource = _notificationsClasses;
                 }
                 catch (Exception e)
                 {
@@ -1463,13 +1466,6 @@ namespace TelerikWpfApp2
             SmsRadChart.ItemsSource = null;
             SmsRadChart2.ItemsSource = null;
         }
-
-        private void RadButton_Click_2(object sender, RoutedEventArgs e)
-        {
-            var notifications = new Notifications(_notificationsClasses);
-            notifications.Show();
-        }
-
         #endregion
 
     }

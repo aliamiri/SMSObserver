@@ -3,14 +3,32 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                 x:Class="TelerikWpfApp2.MainWindow"
-                Title="سامانه نظارت اس.ام.اس" Height="893" Width="1016" >
+                Title="سامانه نظارت اس.ام.اس" Height="643" Width="1077" >
     <Grid>
-        <telerik:RadChart x:Name="SmsRadChart" HorizontalAlignment="Left" Margin="10,246,0,0" VerticalAlignment="Top" Height="274" Width="988"/>
-        <telerik:RadChart x:Name="SmsRadChart2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="231" Width="988"/>
-        <telerik:RadButton Content="تنظیمات" HorizontalAlignment="Left" Height="Auto" Margin="268,525,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click"/>
-        <telerik:RadButton Content="شروع" Name="StartStopButton" HorizontalAlignment="Left" Height="Auto" Margin="595,525,0,0" VerticalAlignment="Top" Width="104" Click="StartStopButton_Click"/>
-        <telerik:RadButton Content="پاک کردن همه چیز" HorizontalAlignment="Left" Height="Auto" Margin="486,525,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click_1"/>
-        <telerik:RadButton Content="هشدارها" HorizontalAlignment="Left" Height="Auto" Margin="377,525,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click_2" />
-        <telerik:RadGridView Name="RadOperatorProblemGridView" HorizontalAlignment="Left" Margin="10,552,0,0" VerticalAlignment="Top" Height="301" Width="988"/>
+        <telerik:RadDocking HasDocumentHost="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+            <telerik:RadSplitContainer>
+                <telerik:RadPaneGroup HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,-774,10">
+                    <telerik:RadPane CanUserClose="False" Header="میانگین سرعت ارسال" ToolTip="میانگین سرعت ارسال و دریافت">
+                        <telerik:RadChart x:Name="SmsRadChart" HorizontalAlignment="Left" VerticalAlignment="Top" Height="438" Width="995" Margin="8,22,0,0"/>
+                    </telerik:RadPane>
+                    <telerik:RadPane CanUserClose="False" Header="تعداد نرسیده ها">
+                        <telerik:RadChart x:Name="SmsRadChart2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="438" Width="995" Margin="8,22,0,0"/>
+                    </telerik:RadPane>
+                    <telerik:RadPane CanUserClose="False" Header="هشدارها">
+                        <telerik:RadGridView Name="RadNoficationGridView" HorizontalAlignment="Left" VerticalAlignment="Top" Height="438" Width="995" Margin="8,22,0,0"/>
+                    </telerik:RadPane>
+                    <telerik:RadPane CanUserClose="False" Header="قطع ارتباط با سرور">
+                        <telerik:RadGridView Name="RadOperatorProblemGridView" HorizontalAlignment="Left" VerticalAlignment="Top" Height="438" Width="995" Margin="8,22,0,0"/>
+                    </telerik:RadPane>
+                </telerik:RadPaneGroup>
+            </telerik:RadSplitContainer>
+<!--            <Image Height="100" Width="100" Source="Resources/green_light.png"  HorizontalAlignment="Left" Margin="690,581,0,0" VerticalAlignment="Top"/>-->
+
+        </telerik:RadDocking>
+        <telerik:RadButton Content="تنظیمات" HorizontalAlignment="Left" Height="Auto" Margin="690,581,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click"/>
+        <telerik:RadButton Content="شروع" Name="StartStopButton" HorizontalAlignment="Left" Height="Auto" Margin="908,581,0,0" VerticalAlignment="Top" Width="104" Click="StartStopButton_Click"/>
+        <telerik:RadButton Content="پاک کردن همه چیز" HorizontalAlignment="Left" Height="Auto" Margin="799,581,0,0" VerticalAlignment="Top" Width="104" Click="RadButton_Click_1"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="320,462,0,0" VerticalAlignment="Top" Width="100"/>
+
     </Grid>
 </Window>
